@@ -28,12 +28,25 @@ dtSub <- dtTrain[logSub]
 #Prepend colums with the users and their activities
 dtSub1 <- cbind(dtSubject, dtActivity, dtSub)
 
-labels(dtSub1)
-View(dtSub1)
+#Calculate the mean of each variable, grouping down to by-user and by-activity, and omitting the computed GROUP cols
+tidyActivities <-aggregate(dtSub1, by=list(dtSub1$SubjectID, dtSub1$ActivityID), FUN=mean, na.rm=TRUE)
+#Ditch the computed GROUP.x colsd GROUP cols
+summary(tidyActivities)
+
+#Substitute the Activty names in place of the Activity IDs. 
+tidyActivities$ActivityID  <- gsub("1","WALKING",tidyActivities$ActivityID)
+tidyActivities$ActivityID  <- gsub("2","WALKING_UPSTAIRS",tidyActivities$ActivityID)
+tidyActivities$ActivityID  <- gsub("3","WALKING_DOWNSTAIRS",tidyActivities$ActivityID)
+tidyActivities$ActivityID  <- gsub("4","SITTING",tidyActivities$ActivityID)
+tidyActivities$ActivityID  <- gsub("5","STANDING",tidyActivities$ActivityID)
+tidyActivities$ActivityID  <- gsub("6","LAYING",tidyActivities$ActivityID)
+
+#Make it clear that these are averages of the original variables -- add _Mean as suffix
+colnames(tidyActivities)[5:ncol(tidyActivities)] <- paste(  colnames(tidyActivities)[5:ncol(tidyActivities)], "Mean", sep = "_")
 
 
+View(tidyActivities)
 
-#Substitute the Activty names in place of the Activity IDs
  
 
  
