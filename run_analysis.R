@@ -1,5 +1,5 @@
-#Class Project
-
+#Class Project Class 3
+Switch to the project folder
 setwd("~/C3Proj")
 
 
